@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function GridLights() {
   const [gridSize] = useState(3); // Default size is 3x3
@@ -7,9 +7,10 @@ function GridLights() {
   );
   const [clickOrder, setClickOrder] = useState([]);
 
+  // Trigger retraction when all boxes are clicked
   useEffect(() => {
-    if(clicked.every((box) => box)) { 
-      console.log("all clicked:", clicked, "Retracting.")
+    if (clicked.every((box) => box)) {
+      console.log("All clicked:", clicked, "Retracting.");
       retractBoxes();
     }
   }, [clicked]);
@@ -18,6 +19,7 @@ function GridLights() {
     if (clicked[index]) {
       return;
     }
+
     const newClicked = [...clicked];
     newClicked[index] = true;
     setClicked(newClicked);
@@ -26,18 +28,20 @@ function GridLights() {
 
   const retractBoxes = () => {
     let currentIndex = clickOrder.length - 1;
+
     console.log("Click order was:", clickOrder);
 
     const interval = setInterval(() => {
       if (currentIndex < 0) {
-        setClickOrder([]);
-        clearInterval(interval);
+        setClickOrder([]); // Clear the click order
+        clearInterval(interval); // Stop the interval
         return;
       }
-      // change clicked
-      setClicked((oldClicked) => {
-        const newClicked = [...oldClicked];
-        newClicked[clickOrder[currentIndex]] = false;
+
+      // Update `clicked` state
+      setClicked((prevClicked) => {
+        const newClicked = [...prevClicked];
+        newClicked[clickOrder[currentIndex]] = false; // Reset box at current index
         console.log(
           `Retracting box at index ${clickOrder[currentIndex]}`,
           "New clicked state:",
@@ -46,8 +50,8 @@ function GridLights() {
         return newClicked;
       });
 
-      currentIndex--;
-    }, 500);
+      currentIndex--; // Move to the next box in reverse order
+    }, 500); // Adjust timing as needed
   };
 
   // Generate grid boxes
