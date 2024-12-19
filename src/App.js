@@ -5,7 +5,7 @@ import GridLights from "./GridLights.js";
 function Hero() {
   return (
     <div className="py-6 text-center shadow-lg w-full text-xl font-semibold">
-      <h2>Guess The Number</h2>
+      <h2>Grid Lights</h2>
     </div>
   );
 }
